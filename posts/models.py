@@ -19,6 +19,9 @@ class Post(BaseModel):
     def __str__(self) -> str:
         return f"{self.user.username} has created post on {datetime.strftime(self.updated, '%a,%d %b, %Y %I:%M:%S %p')}"
 
+    class Meta:
+        ordering = ('-updated',)
+
     @property
     def get_all_comments(self):
         return self.comments.all()

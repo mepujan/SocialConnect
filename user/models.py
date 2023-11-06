@@ -16,6 +16,9 @@ class Profile(BaseModel):
     friends = models.ManyToManyField(User, related_name='friends', blank=True)
     profile_pic = models.ImageField(upload_to='profile', default='avatar.png')
 
+    class Meta:
+        ordering = ('-updated',)
+
     def __str__(self) -> str:
         return f"{self.user.username} has created profile on {datetime.strftime(self.updated, '%a,%d %b, %Y %I:%M:%S %p')}"
 

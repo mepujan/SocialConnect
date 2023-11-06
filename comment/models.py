@@ -9,5 +9,8 @@ class Comment(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.CharField(max_length=400)
 
+    class Meta:
+        ordering = ('-updated',)
+
     def __str__(self):
         return f"{self.user.email} commented on post {self.pk}"
