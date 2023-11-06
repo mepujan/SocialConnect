@@ -25,7 +25,8 @@ class Post(BaseModel):
 
 
 class Like(BaseModel):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='likes')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_liked = models.BooleanField(default=False)
 
