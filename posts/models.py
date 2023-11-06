@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 class BaseModel(models.Model):
@@ -16,11 +17,11 @@ class Post(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.user
+        return f"{self.user.username} has created post on {datetime.strftime(self.updated, '%a,%d %b, %Y %I:%M:%S %p')}"
 
     @property
     def get_all_comments(self):
-        pass
+        return self.comments.all()
 
 
 class Like(BaseModel):
