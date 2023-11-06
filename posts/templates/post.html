@@ -10,9 +10,11 @@
         <!-- <p class="card-text">{{post.status}}</p> -->
 
     </div>
-    <form>
+    <form method="post">
         {% csrf_token %}
         {{comment_form}}
+        <!-- <input type="hidden" value="1" , name="user" /> -->
+        <input type="hidden" value="{{post.id}}" name="post" />
         <button class="btn btn-primary">Comment</button>
     </form>
 </div>
