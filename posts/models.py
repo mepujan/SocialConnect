@@ -27,8 +27,16 @@ class Post(BaseModel):
         return self.comments.all()
 
     @property
+    def get_comments_count(self):
+        return self.comments.count()
+
+    @property
     def get_all_likes(self):
         return self.likes.all()
+
+    @property
+    def get_likes_count(self):
+        return self.likes.count()
 
 
 class Like(BaseModel):
@@ -36,6 +44,9 @@ class Like(BaseModel):
         Post, on_delete=models.CASCADE, related_name='likes')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_liked = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('-updated',)
 
     def __str__(self) -> str:
         return f'{self.user.username} liked post {self.post.pk}'
