@@ -23,6 +23,10 @@ class Post(BaseModel):
     def get_all_comments(self):
         return self.comments.all()
 
+    @property
+    def get_all_likes(self):
+        return self.likes.all()
+
 
 class Like(BaseModel):
     post = models.ForeignKey(
