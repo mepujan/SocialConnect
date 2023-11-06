@@ -20,7 +20,7 @@ class Post(BaseModel):
 
     @property
     def get_all_comments(self):
-        pass
+        return self.comments.all()
 
 
 class Like(BaseModel):
