@@ -8,7 +8,13 @@
     <div class="card-body">
         <h5 class="card-title">{{post.status}}</h5>
         <!-- <p class="card-text">{{post.status}}</p> -->
+
     </div>
+    <form>
+        {% csrf_token %}
+        {{comment_form}}
+        <button class="btn btn-primary">Comment</button>
+    </form>
 </div>
 {%endfor%}
 {% endblock %}
