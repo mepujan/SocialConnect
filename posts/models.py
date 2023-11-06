@@ -12,6 +12,10 @@ class Post(models.Model):
     def __str__(self) -> str:
         return self.user
 
+    @property
+    def get_all_comments(self):
+        pass
+
 
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
