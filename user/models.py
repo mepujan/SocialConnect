@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
 from datetime import datetime
 from posts.models import BaseModel
@@ -14,7 +15,8 @@ class Profile(BaseModel):
     address = models.CharField(max_length=100)
     quote = models.CharField(max_length=200)
     friends = models.ManyToManyField(User, related_name='friends', blank=True)
-    profile_pic = models.ImageField(upload_to='profile', default='avatar.png')
+    profile_pic = models.ImageField(upload_to='profile', default='avatar.png', validators=[
+                                    FileExtensionValidator(['png', 'jpg', 'jpeg'])])
 
     class Meta:
         ordering = ('-updated',)
