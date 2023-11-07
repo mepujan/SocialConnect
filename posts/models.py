@@ -2,21 +2,17 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
 from datetime import datetime
-
-
-class BaseModel(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
+from user.models import Profile
+from abstract.abstract import BaseModel
 
 
 class Post(BaseModel):
-    status = models.TextField()
+    content = models.TextField()
     image = models.ImageField(upload_to="posts", null=True, blank=True, validators=[
                               FileExtensionValidator(['png', 'jpg', 'jpeg'])])
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='posts')
+    liked = models.ManyToManyField(Profile, related_name='likes', default=None)
 
     def __str__(self) -> str:
         return f"{self.user.username} has created post on {datetime.strftime(self.updated, '%a,%d %b, %Y %I:%M:%S %p')}"

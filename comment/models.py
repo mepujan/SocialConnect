@@ -1,6 +1,7 @@
 from django.db import models
-from posts.models import Post, BaseModel
+from posts.models import Post
 from django.contrib.auth.models import User
+from abstract.abstract import BaseModel
 
 
 class Comment(BaseModel):

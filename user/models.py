@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
 from datetime import datetime
-from posts.models import BaseModel
+from abstract.abstract import BaseModel
 
 STATUS_CHOICES = (
     ('send', 'send'),
