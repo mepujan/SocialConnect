@@ -23,7 +23,8 @@ from .views import homepage
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homepage, name="homepage"),
-    path("posts", include('posts.urls', namespace='posts'))
+    path("posts", include('posts.urls', namespace='posts')),
+    path('profile', include('user.urls', namespace='profiles'))
 ]
 
 if settings.DEBUG:
