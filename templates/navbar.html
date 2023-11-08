@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'homepage'%}">
             <img src="{% static 'images/social-connect.png'%}" alt="Social Connect" width="90" height="90">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -21,11 +21,14 @@
             <div class="d-flex">
                 {% if request.user.is_authenticated %}
                 <a class="navbar-brand" href="#">
-                    <img src="{% static 'images/social-connect.png' %}" alt="Avatar Logo" style="width:40px;"
+                    <img src="{{request.profile_pic.url}}" alt="{{request.user.username}}" style="width:40px;"
                         class="rounded-pill">
                 </a>
+                <a href="{% url 'profiles:logout'%}" class="btn btn-danger me-4" role="button"
+                    aria-disabled="true">Logout</a>
                 {%else%}
-                <button class="btn btn-primary">Login</button>
+                <a href="{% url 'profiles:login'%}" class="btn btn-primary me-4" role="button"
+                    aria-disabled="true">Login</a>
                 {%endif%}
             </div>
         </div>

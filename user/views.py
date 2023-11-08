@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserUpdateForm, LoginForm, SignUpForm
 from .models import Profile
@@ -50,3 +50,9 @@ def signup(request):
             form.save()
             return redirect("/profile/login")
     return render(request, 'signup.html', {'form': form})
+
+
+@login_required(login_url='/profile/login')
+def logout_user(request):
+    logout(request)
+    return redirect("/profile/login")
