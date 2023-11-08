@@ -20,11 +20,12 @@
             </ul>
             <div class="d-flex">
                 {% if request.user.is_authenticated %}
-                <a class="navbar-brand" href="#">
-                    <img src="{{request.profile_pic.url}}" alt="{{request.user.username}}" style="width:40px;"
+                <a class="navbar-brand" href="{% url 'profiles:profile'%}">
+                    <img src="{{profile.profile_pic.url}}" alt="{{request.user.username}}" width="30"
                         class="rounded-pill">
+                    <span>{{request.user.username}}</span>
                 </a>
-                <a href="{% url 'profiles:logout'%}" class="btn btn-danger me-4" role="button"
+                <a href="{% url 'profiles:logout'%}" class="btn btn-danger ms-5" role="button"
                     aria-disabled="true">Logout</a>
                 {%else%}
                 <a href="{% url 'profiles:login'%}" class="btn btn-primary me-4" role="button"
