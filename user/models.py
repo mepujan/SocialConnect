@@ -20,6 +20,12 @@ class Profile(BaseModel):
     profile_pic = models.ImageField(upload_to='profile', default='avatar.png', validators=[
                                     FileExtensionValidator(['png', 'jpg', 'jpeg'])])
 
+    def full_name(self):
+        return self.first_name + " " + self.last_name
+
+    def email(self):
+        return self.user.email
+
     class Meta:
         ordering = ('-updated',)
 
