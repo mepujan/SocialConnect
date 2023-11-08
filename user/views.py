@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import UserUpdateForm
+from django.contrib.auth import authenticate, login
+from .forms import UserUpdateForm, LoginForm
 from .models import Profile
 
 
@@ -26,3 +27,17 @@ def create_profile(request):
             instance.save()
             return redirect("/profile")
     return render(request, 'add-user.html', {'form': form})
+
+
+def login_user(request):
+    form = LoginForm()
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect("/")
+    return render(request, 'login.html', {'form': form})
