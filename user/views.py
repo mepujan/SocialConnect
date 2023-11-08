@@ -7,8 +7,16 @@ from .models import Profile
 def profile(request):
     profile_ = Profile.objects.get(user=request.user)
     update_form = UserUpdateForm(instance=profile_)
+    return render(request, 'profile.html', {'form': update_form})
+
+
+def update_profile(request):
+    profile_ = Profile.objects.get(user=request.user)
+    print("--> ", profile_)
+    update_form = UserUpdateForm(instance=profile_)
     if request.method == "POST":
         form = UserUpdateForm(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = request.user
@@ -20,9 +28,11 @@ def profile(request):
 def create_profile(request):
     form = UserUpdateForm()
     if request.method == "POST":
-        form = UserUpdateForm(request.POST, request.FILES)
+        profile_ = Profile.objects.get(user=request.user)
+        form = UserUpdateForm(request.POST, request.FILES, instance=profile_)
         if form.is_valid():
             instance = form.save(commit=False)
+            print(request.user)
             instance.user = request.user
             instance.save()
             return redirect("/profile")

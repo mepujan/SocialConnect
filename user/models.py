@@ -14,7 +14,6 @@ class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
-    email = models.EmailField(unique=True, max_length=100)
     address = models.CharField(max_length=100)
     bio = models.TextField(max_length=200, default="no bio")
     friends = models.ManyToManyField(User, related_name='friends', blank=True)

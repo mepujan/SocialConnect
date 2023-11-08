@@ -8,7 +8,7 @@ from .models import Profile
 class UserUpdateForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ('first_name', 'last_name', 'email',
+        fields = ('first_name', 'last_name',
                   'address', 'bio', 'profile_pic')
 
 
@@ -21,4 +21,4 @@ class LoginForm(forms.Form):
 class SignUpForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')
