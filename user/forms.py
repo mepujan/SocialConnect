@@ -16,3 +16,9 @@ class LoginForm(forms.Form):
     username = forms.CharField(label="username", max_length=100)
     password = forms.CharField(
         label="password", max_length=200, widget=forms.PasswordInput())
+
+
+class SignUpForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
