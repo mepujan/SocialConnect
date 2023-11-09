@@ -12,10 +12,11 @@ class Post(BaseModel):
                               FileExtensionValidator(['png', 'jpg', 'jpeg'])])
     author = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='posts')
-    liked = models.ManyToManyField(Profile, related_name='likes', default=None)
+    liked = models.ManyToManyField(
+        Profile, related_name='likes', default=None, blank=True)
 
     def __str__(self) -> str:
-        return f"{self.user.username} has created post on {datetime.strftime(self.updated, '%a,%d %b, %Y %I:%M:%S %p')}"
+        return f"{self.author.user.username} has created post on {datetime.strftime(self.updated, '%a,%d %b, %Y %I:%M:%S %p')}"
 
     class Meta:
         ordering = ('-updated',)
