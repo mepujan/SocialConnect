@@ -11,7 +11,7 @@
                         <div class="card text-dark">
                             <div class="card-body p-4">
                                 <h4 class="mb-0">Recent Posts</h4>
-                                <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+                                <p class="fw-light mb-4 pb-2">Latest Posts section by users</p>
                                 {% for post in posts %}
                                 <div class="d-flex flex-start">
                                     <img class="rounded-circle shadow-1-strong me-3"
@@ -22,18 +22,18 @@
                                             <p class="mb-0">
                                                 {{post.updated}}
                                             </p>
-                                            <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
-                                            <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
-                                            <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
                                         </div>
                                         <p class="mb-0">
                                             {{post.content}}
                                         </p>
-                                        <img src="{{post.image.url}}" alt="post image" width="200" />
+                                        {% if post.image %}
+                                        <img src="{{post.image.url}}" alt="post image" width="200" height="200" />
+                                        {% endif %}
                                     </div>
                                 </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
+
 
                             <hr class="my-0" style="height: 1px;" />
                         </div>
@@ -41,11 +41,12 @@
                 </div>
         </section>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-4 my-3">
         <h3>Add New Post</h3>
-        <form>
+        <hr />
+        <form method="post" action="{% url 'posts:new-post'%}" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form form %}
+            {% bootstrap_form post_form %}
             <button class="btn btn-primary">Add New Post</button>
         </form>
     </div>
