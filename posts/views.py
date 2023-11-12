@@ -20,6 +20,7 @@ def add_new_post(request):
     return render(request, 'homepage.html', {"form": form})
 
 
+@login_required(login_url='/profile/login')
 def add_comment(request):
     form = CommentForm()
     if request.method == "POST":

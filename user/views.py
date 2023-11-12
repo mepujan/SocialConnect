@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserUpdateForm, LoginForm, SignUpForm
 from .models import Profile
 from django.views.generic import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 
 
 @login_required(login_url='/profile/login')
@@ -58,15 +60,27 @@ def logout_user(request):
     return redirect("/profile/login")
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = Profile
     pk_url_kwarg = 'pk'
     template_name = 'profile.html'
 
 
+@login_required(login_url='/profile/login')
 def get_all_user(request):
     profiles = Profile.objects.exclude(user=request.user)
     context = {
         'profiles': profiles
+    }
+    return render(request, 'people-list.html', context)
+
+
+@login_required(login_url='/profile/login')
+def search_user(request):
+    users = User.objects.get(username=request.POST.get('username'))
+    print(users)
+    profile = Profile.objects.filter(user=users)
+    context = {
+        'profiles': profile
     }
     return render(request, 'people-list.html', context)
