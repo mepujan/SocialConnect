@@ -26,6 +26,9 @@ class Profile(BaseModel):
     def email(self):
         return self.user.email
 
+    def post_count(self):
+        return self.posts.count()
+
     class Meta:
         ordering = ('-updated',)
 
