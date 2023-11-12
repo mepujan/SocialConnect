@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
+{% load bootstrap_icons %}
 {% block content %}
 
 <div class="row">
@@ -25,11 +26,12 @@
                                             {% if request.user == post.author.user%}
                                             <div class="ms-5">
                                                 <a href="{% url 'posts:delete-post' post.id %}"
-                                                    class="btn btn-danger btn-sm ms-5" role="button"
-                                                    aria-disabled="true">Delete</a>
+                                                    class="btn btn-danger btn-sm" role="button"
+                                                    aria-disabled="true">{% bs_icon 'trash' %}</a>
                                                 <a href="{% url 'posts:update-post' post.id %}"
-                                                    class="btn btn-secondary btn-sm ms-5" role="button"
-                                                    aria-disabled="true">Update</a>
+                                                    class="btn btn-secondary btn-sm" role="button"
+                                                    aria-disabled="true">{% bs_icon 'pencil' %}</a>
+
 
                                             </div>
                                             {% endif %}
@@ -49,14 +51,27 @@
                                 <p> Comments ({{post.get_comments_count}}) </p>
 
 
-                                <form method="post" action="{% url 'posts:new-post'%}">
+                                <form class="mb-4" method="post" action="{% url 'posts:add-comment'%}">
                                     {% csrf_token %}
                                     {% bootstrap_form c_form %}
+                                    <input type="hidden" name="post_id" value="{{post.id}}" />
                                     <button class="btn btn-primary">comment</button>
                                 </form>
+                                {% for comment in post.get_all_comments%}
+                                <!-- <p>{{comment.comment}}</p> -->
+                                <div class="d-flex flex-start p-2">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                        src="{{comment.user.profile_pic.url}}" alt="avatar" width="30" height="30" />
+                                    <div>
+                                        <h6 class="fw-bold mb-1 mt-2">{{comment.user.user.username}}</h6>
+                                        <span>{{comment.updated | timesince}} ago</span>
+                                        <p>{{comment.comment}}</p>
+                                    </div>
+                                    <hr />
+                                </div>
+                                {%endfor%}
                                 {% endfor %}
                             </div>
-
 
                             <hr class="my-0" style="height: 1px;" />
                         </div>

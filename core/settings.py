@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'posts',
     'comment',
     'user',
-    'django_bootstrap5'
+    'django_bootstrap5',
+    'django_bootstrap_icons'
 ]
 
 MIDDLEWARE = [

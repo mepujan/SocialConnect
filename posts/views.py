@@ -6,22 +6,6 @@ from user.models import Profile
 from django.contrib.auth.decorators import login_required
 
 
-def get_all_posts(request):
-    form = CommentForm()
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        post = Post.objects.get(id=request.POST.get('post'))
-        if form.is_valid():
-            instance = form.save(commit=False)
-            # print("clean-data = ", form)
-            instance.user = request.user
-            instance.post = post
-            instance.save()
-            return redirect("/posts")
-    posts = Post.objects.all()
-    return render(request, "post.html", {'posts': posts, 'comment_form': form})
-
-
 @login_required(login_url='/profile/login')
 def add_new_post(request):
     form = PostForm()
@@ -34,6 +18,20 @@ def add_new_post(request):
             instance.save()
             return redirect("/")
     return render(request, 'homepage.html', {"form": form})
+
+
+def add_comment(request):
+    form = CommentForm()
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        post_id = request.POST.get('post_id')
+        post = Post.objects.get(id=post_id)
+        if form.is_valid:
+            instance = form.save(commit=False)
+            instance.user = Profile.objects.get(user=request.user)
+            instance.post = post
+            instance.save()
+            return redirect("/")
 
 
 @login_required(login_url='/profile/login')
