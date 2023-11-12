@@ -18,16 +18,15 @@ def profile(request):
 @login_required(login_url='/profile/login')
 def create_profile(request):
     form = UserUpdateForm()
+    profile_ = Profile.objects.get(user=request.user)
     if request.method == "POST":
-        profile_ = Profile.objects.get(user=request.user)
         form = UserUpdateForm(request.POST, request.FILES, instance=profile_)
         if form.is_valid():
             instance = form.save(commit=False)
-            print(request.user)
             instance.user = request.user
             instance.save()
             return redirect("/profile")
-    return render(request, 'add-user.html', {'form': form})
+    return render(request, 'add-user.html', {'form': form, 'profile': profile_})
 
 
 def login_user(request):
@@ -68,9 +67,11 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 
 @login_required(login_url='/profile/login')
 def get_all_user(request):
+    profile_ = Profile.objects.get(user=request.user)
     profiles = Profile.objects.exclude(user=request.user)
     context = {
-        'profiles': profiles
+        'profiles': profiles,
+        'profile': profile_
     }
     return render(request, 'people-list.html', context)
 
@@ -78,9 +79,10 @@ def get_all_user(request):
 @login_required(login_url='/profile/login')
 def search_user(request):
     users = User.objects.get(username=request.POST.get('username'))
-    print(users)
     profile = Profile.objects.filter(user=users)
+    profile_ = Profile.objects.get(user=request.user)
     context = {
-        'profiles': profile
+        'profiles': profile,
+        'profile': profile_
     }
     return render(request, 'people-list.html', context)

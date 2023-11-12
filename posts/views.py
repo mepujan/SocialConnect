@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='/profile/login')
 def add_new_post(request):
     form = PostForm()
+    profile_ = Profile.objects.get(user=request.user)
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -17,7 +18,7 @@ def add_new_post(request):
             instance.author = profile
             instance.save()
             return redirect("/")
-    return render(request, 'homepage.html', {"form": form})
+    return render(request, 'homepage.html', {"form": form, 'profile': profile_})
 
 
 @login_required(login_url='/profile/login')
@@ -55,6 +56,7 @@ def update_post(request, post_id):
             return redirect("/")
 
     context = {
-        "form": form
+        "form": form,
+        'profile': profile
     }
     return render(request, 'update-post.html', context)
