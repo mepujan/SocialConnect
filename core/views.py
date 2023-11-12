@@ -3,21 +3,13 @@ from comment.form import CommentForm
 from posts.forms import PostForm
 from posts.models import Post
 from user.models import Profile
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url="/profile/login")
 def homepage(request):
     profile_ = Profile.objects.get(user=request.user)
-    form = CommentForm()
+    c_form = CommentForm()
     post_form = PostForm()
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        post = Post.objects.get(id=request.POST.get('post'))
-        if form.is_valid():
-            instance = form.save(commit=False)
-            # print("clean-data = ", form)
-            instance.user = request.user
-            instance.post = post
-            instance.save()
-            return redirect("/posts")
     posts = Post.objects.all()
-    return render(request, "homepage.html", {'posts': posts, 'comment_form': form, 'profile': profile_, 'post_form': post_form})
+    return render(request, "homepage.html", {'posts': posts, 'c_form': c_form, 'profile': profile_, 'post_form': post_form})

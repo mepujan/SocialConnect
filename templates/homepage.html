@@ -13,16 +13,28 @@
                                 <h4 class="mb-0">Recent Posts</h4>
                                 <p class="fw-light mb-4 pb-2">Latest Posts section by users</p>
                                 {% for post in posts %}
-                                <div class="d-flex flex-start">
+                                <div class="d-flex flex-start p-2">
                                     <img class="rounded-circle shadow-1-strong me-3"
                                         src="{{post.author.profile_pic.url}}" alt="avatar" width="60" height="60" />
                                     <div>
                                         <h6 class="fw-bold mb-1">{{post.author.user.username}}</h6>
                                         <div class="d-flex align-items-center mb-3">
                                             <p class="mb-0">
-                                                {{post.updated}}
+                                                {{post.updated | timesince}} ago
                                             </p>
+                                            {% if request.user == post.author.user%}
+                                            <div class="ms-5">
+                                                <a href="{% url 'posts:delete-post' post.id %}"
+                                                    class="btn btn-danger btn-sm ms-5" role="button"
+                                                    aria-disabled="true">Delete</a>
+                                                <a href="{% url 'posts:update-post' post.id %}"
+                                                    class="btn btn-secondary btn-sm ms-5" role="button"
+                                                    aria-disabled="true">Update</a>
+
+                                            </div>
+                                            {% endif %}
                                         </div>
+
                                         <p class="mb-0">
                                             {{post.content}}
                                         </p>
@@ -30,7 +42,18 @@
                                         <img src="{{post.image.url}}" alt="post image" width="200" height="200" />
                                         {% endif %}
                                     </div>
+
                                 </div>
+
+
+                                <p> Comments ({{post.get_comments_count}}) </p>
+
+
+                                <form method="post" action="{% url 'posts:new-post'%}">
+                                    {% csrf_token %}
+                                    {% bootstrap_form c_form %}
+                                    <button class="btn btn-primary">comment</button>
+                                </form>
                                 {% endfor %}
                             </div>
 

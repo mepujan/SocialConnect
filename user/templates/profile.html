@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
 {% block content %}
-
+{% if request.user == profile.user%}
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -23,6 +23,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 <!-- end of modal  -->
 <section style="background-color: #eee;">
     <div class="container py-5">
@@ -37,10 +38,12 @@
                         <p class="text-muted mb-4">{{profile.address}}</p>
                         <div class="d-flex justify-content-center mb-2">
                             <button type="button" class="btn btn-primary">Add Friend</button>
+                            {% if request.user == profile.user%}
                             <button type="button" class="btn btn-outline-primary ms-1" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
                                 Update Profile
                             </button>
+                            {%endif%}
                         </div>
                         <button type="button" class="btn btn-secondary">View Friends</button>
                     </div>

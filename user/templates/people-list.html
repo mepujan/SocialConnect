@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% for profile in profiles  %}
+<div class="d-flex flex-start p-2">
+    <img class="rounded-circle shadow-1-strong me-3" src="{{profile.profile_pic.url}}" alt="avatar" width="60"
+        height="60" />
+    <div>
+        <a href="{% url 'profiles:profile-detail' profile.id %}" style="text-decoration: none; color: black;">
+            <h6 class="fw-bold mb-1 mt-4">{{profile.user.username}}</h6>
+        </a>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

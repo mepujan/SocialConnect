@@ -3,12 +3,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserUpdateForm, LoginForm, SignUpForm
 from .models import Profile
+from django.views.generic import DetailView
 
 
 @login_required(login_url='/profile/login')
 def profile(request):
     profile_ = Profile.objects.get(user=request.user)
-    print("profile ->", profile_)
     update_form = UserUpdateForm(instance=profile_)
     return render(request, 'profile.html', {'form': update_form, 'profile': profile_})
 
@@ -56,3 +56,17 @@ def signup(request):
 def logout_user(request):
     logout(request)
     return redirect("/profile/login")
+
+
+class ProfileDetailView(DetailView):
+    model = Profile
+    pk_url_kwarg = 'pk'
+    template_name = 'profile.html'
+
+
+def get_all_user(request):
+    profiles = Profile.objects.exclude(user=request.user)
+    context = {
+        'profiles': profiles
+    }
+    return render(request, 'people-list.html', context)
