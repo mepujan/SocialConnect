@@ -18,7 +18,7 @@ class ProfileManager(models.Manager):
 
     def get_all_profiles_to_add(self, sender):
         profiles = Profile.objects.all().exclude(user=sender)
-        profile = Profile.object.get(user=sender)
+        profile = Profile.objects.get(user=sender)
         qs = Relationship.objects.filter(
             Q(sender=profile) | Q(receiver=profile))
 
@@ -43,6 +43,8 @@ class Profile(BaseModel):
     friends = models.ManyToManyField(User, related_name='friends', blank=True)
     profile_pic = models.ImageField(upload_to='profile', default='avatar.png', validators=[
                                     FileExtensionValidator(['png', 'jpg', 'jpeg'])])
+
+    objects = ProfileManager()
 
     def full_name(self):
         return self.first_name + " " + self.last_name

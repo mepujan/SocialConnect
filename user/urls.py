@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (profile, create_profile, login_user, signup, logout_user,
-                    ProfileDetailView, get_all_user, search_user, friend_request_received)
+                    ProfileDetailView, get_all_user, search_user, friend_request_received, profiles_to_add_friend)
 
 
 app_name = 'profiles'
@@ -14,6 +14,7 @@ urlpatterns = [
     path("<int:pk>/profile", ProfileDetailView.as_view(), name="profile-detail"),
     path('peoples', get_all_user, name='peoples'),
     path('search', search_user, name='search-user'),
-    path('requests', friend_request_received, name='requests')
+    path('requests', friend_request_received, name='requests'),
+    path('add-friend', profiles_to_add_friend, name='add-friend')
 
 ]

@@ -66,17 +66,6 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 
 
 @login_required(login_url='/profile/login')
-def get_all_user(request):
-    profile_ = Profile.objects.get(user=request.user)
-    profiles = Profile.objects.exclude(user=request.user)
-    context = {
-        'profiles': profiles,
-        'profile': profile_
-    }
-    return render(request, 'people-list.html', context)
-
-
-@login_required(login_url='/profile/login')
 def search_user(request):
     users = User.objects.get(username=request.POST.get('username'))
     profile = Profile.objects.filter(user=users)
@@ -88,6 +77,7 @@ def search_user(request):
     return render(request, 'people-list.html', context)
 
 
+@login_required(login_url='/profile/login')
 def friend_request_received(request):
     profile = Profile.objects.get(user=request.user)
     qs = Relationship.objects.invitation_received(receiver=profile)
@@ -95,3 +85,23 @@ def friend_request_received(request):
         'requests': qs
     }
     return render(request, 'friend-request.html', context)
+
+
+@login_required(login_url='/profile/login')
+def get_all_user(request):
+    profile_ = Profile.objects.get(user=request.user)
+    profiles = Profile.objects.get_all_profiles(request.user)
+    context = {
+        'profiles': profiles,
+        'profile': profile_
+    }
+    return render(request, 'people-list.html', context)
+
+
+@login_required(login_url='/profile/login')
+def profiles_to_add_friend(request):
+    profiles = Profile.objects.get_all_profiles_to_add(request.user)
+    context = {
+        'profiles': profiles
+    }
+    return render(request, 'to-add-friend.html', context)
