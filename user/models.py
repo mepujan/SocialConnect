@@ -36,12 +36,20 @@ class Profile(BaseModel):
         return f"{self.user.username} has created profile on {datetime.strftime(self.updated, '%a,%d %b, %Y %I:%M:%S %p')}"
 
 
+class RelationshipManager(models.Manager):
+    def invitation_received(self, receiver):
+        qs = Relationship.objects.filter(receiver=receiver, status="send")
+        return qs
+
+
 class Relationship(BaseModel):
     sender = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='sender')
     receiver = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='receiver')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+
+    objects = RelationshipManager()
 
     def __str__(self) -> str:
         return f"{self.sender.user.username} send friend request to {self.receiver.user.username}"
