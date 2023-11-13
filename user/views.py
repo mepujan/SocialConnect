@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserUpdateForm, LoginForm, SignUpForm
-from .models import Profile
+from .models import Profile, Relationship
 from django.views.generic import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -86,3 +86,12 @@ def search_user(request):
         'profile': profile_
     }
     return render(request, 'people-list.html', context)
+
+
+def friend_request_received(request):
+    profile = Profile.objects.get(user=request.user)
+    qs = Relationship.objects.invitation_received(receiver=profile)
+    context = {
+        'requests': qs
+    }
+    return render(request, 'friend-request.html', context)
