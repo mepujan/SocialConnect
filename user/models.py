@@ -3,11 +3,35 @@ from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
 from datetime import datetime
 from abstract.abstract import BaseModel
+from django.db.models import Q
 
 STATUS_CHOICES = (
     ('send', 'send'),
     ('accepted', 'accepted')
 )
+
+
+class ProfileManager(models.Manager):
+    def get_all_profiles(self, me):
+        qs = Profile.objects.exclude(user=me).all()
+        return qs
+
+    def get_all_profiles_to_add(self, sender):
+        profiles = Profile.objects.all().exclude(user=sender)
+        profile = Profile.object.get(user=sender)
+        qs = Relationship.objects.filter(
+            Q(sender=profile) | Q(receiver=profile))
+
+        accepted_profile = []
+        for relation in qs:
+            if relation.status == 'accepted':
+                accepted_profile.append(relation.sender)
+                accepted_profile.append(relation.receiver)
+
+        available_profile = [
+            profile for profile in profiles if profile not in accepted_profile]
+
+        return available_profile
 
 
 class Profile(BaseModel):
