@@ -10,6 +10,9 @@ This is a social media application where you can create your account and create 
 4. Search user by username
 5. View other user profile
 6. Update and View Own Profile
+7. Send Friend request
+8. Accept Friend Request
+9. Cancel Friend Request
 
 ## setting up the project
 
