@@ -37,7 +37,7 @@
                         <p class="text-muted mb-1">{{profile.bio}}</p>
                         <p class="text-muted mb-4">{{profile.address}}</p>
                         <div class="d-flex justify-content-center mb-2">
-                            <button type="button" class="btn btn-primary">Add Friend</button>
+                            <!-- <button type="button" class="btn btn-primary">Add Friend</button> -->
                             {% if request.user == profile.user%}
                             <button type="button" class="btn btn-outline-primary ms-1" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
@@ -45,7 +45,7 @@
                             </button>
                             {%endif%}
                         </div>
-                        <button type="button" class="btn btn-secondary">View Friends</button>
+                        <!-- <button type="button" class="btn btn-secondary">View Friends</button> -->
                     </div>
                 </div>
                 <div class="card mb-4 mb-lg-0">

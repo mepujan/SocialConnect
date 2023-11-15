@@ -9,7 +9,8 @@
         <a href="{% url 'profiles:profile-detail' profile.id %}" style="text-decoration: none; color: black;">
             <h6 class="fw-bold mb-1 mt-4">{{profile.user.username}}</h6>
         </a>
-        <button class="btn btn-secondary">View Profile</button>
+        <a class="btn btn-secondary" href="{% url 'profiles:profile-detail' profile.id %}" role="button">View
+            Profile</a>
         {% if profile.user not in receiver and profile.user not in sender %}
         <a class="btn btn-primary" href="{% url 'profiles:add-friend' profile.id%}" role="button">Add Friend</a>
         {% endif %}
