@@ -1,3 +1,5 @@
+
+from typing import Any
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -78,14 +80,42 @@ def search_user(request):
     return render(request, 'people-list.html', context)
 
 
-@login_required(login_url='/profile/login')
-def friend_request_received(request):
-    profile = Profile.objects.get(user=request.user)
-    qs = Relationship.objects.invitation_received(receiver=profile)
-    context = {
-        'requests': qs
-    }
-    return render(request, 'friend-request.html', context)
+# @login_required(login_url='/profile/login')
+# def friend_request_received(request):
+#     profile = Profile.objects.get(user=request.user)
+#     qs = Relationship.objects.invitation_received(receiver=profile)
+#     context = {
+#         'requests': qs
+#     }
+#     return render(request, 'friend-request.html', context)
+
+
+class FriendRequestReceivedView(ListView):
+    model = Profile
+    template_name = 'friends.html'
+
+    def get_queryset(self):
+        profile = Profile.objects.get(user=self.request.user)
+        qs = Relationship.objects.invitation_received(receiver=profile)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = User.objects.get(username__iexact=self.request.user)
+        profile = Profile.objects.get(user=user)
+        context['profile'] = profile
+
+        relation_receiver = Relationship.objects.filter(receiver=profile)
+
+        print('rel receiver ->', relation_receiver)
+        rel_receiver = []
+        for profile_ in relation_receiver:
+            rel_receiver.append(profile_.receiver.user)
+            print('receiver -> ', profile_.receiver.user)
+
+        context['receiver'] = rel_receiver
+
+        return context
 
 
 @login_required(login_url='/profile/login')
@@ -166,3 +196,28 @@ def cancel_friend_request(request, user_id):
         Q(sender=receiver) & Q(receiver=sender)))
     rel.delete()
     return redirect('/profile/peoples')
+
+
+class ViewFriendList(ListView):
+    model = Profile
+    template_name = 'people-list.html'
+
+    def get_queryset(self):
+        qs = Profile.objects.friends_list(self.request.user)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(user=self.request.user)
+        context['profile'] = profile
+        return context
+
+
+def accept_friend_request(request, profile_id):
+    receiver = Profile.objects.get(user=request.user)
+    sender = Profile.objects.get(id=profile_id)
+    relationship = Relationship.objects.get(
+        Q(sender=sender) & Q(receiver=receiver))
+    relationship.status = 'accepted'
+    relationship.save()
+    return redirect('/profile/friends')
