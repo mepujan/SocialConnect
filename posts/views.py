@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect
 from .models import Post
 from comment.form import CommentForm
 from .forms import PostForm
-from user.models import Profile
+from user.models import Profile, Relationship
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 @login_required(login_url='/profile/login')
 def add_new_post(request):
     form = PostForm()
     profile_ = Profile.objects.get(user=request.user)
+    request_available = Relationship.objects.filter(
+        Q(receiver=profile_) & Q(status="send"))
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -18,7 +21,7 @@ def add_new_post(request):
             instance.author = profile
             instance.save()
             return redirect("/")
-    return render(request, 'homepage.html', {"form": form, 'profile': profile_})
+    return render(request, 'homepage.html', {"form": form, 'profile': profile_, 'request_count': len(request_available)})
 
 
 @login_required(login_url='/profile/login')

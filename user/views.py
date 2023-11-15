@@ -107,13 +107,16 @@ class FriendRequestReceivedView(ListView):
 
         relation_receiver = Relationship.objects.filter(receiver=profile)
 
-        print('rel receiver ->', relation_receiver)
         rel_receiver = []
         for profile_ in relation_receiver:
             rel_receiver.append(profile_.receiver.user)
             print('receiver -> ', profile_.receiver.user)
 
         context['receiver'] = rel_receiver
+        request_available = Relationship.objects.filter(
+            Q(receiver=profile) & Q(status="send"))
+
+        context['request_count'] = len(request_available)
 
         return context
 
@@ -165,6 +168,9 @@ class ProfileListView(LoginRequiredMixin, ListView):
 
         context['sender'] = rel_sender
         context['receiver'] = rel_receiver
+        request_available = Relationship.objects.filter(
+            Q(receiver=profile) & Q(status="send"))
+        context['request_count'] = len(request_available)
 
         return context
 
@@ -210,6 +216,9 @@ class ViewFriendList(ListView):
         context = super().get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)
         context['profile'] = profile
+        request_available = Relationship.objects.filter(
+            Q(receiver=profile) & Q(status="send"))
+        context['request_count'] = len(request_available)
         return context
 
 
