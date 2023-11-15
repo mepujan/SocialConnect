@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% for profile in object_list  %}
+<div class="d-flex flex-start p-2 ms-4">
+    <img class="rounded-circle shadow-1-strong me-3" src="{{profile.profile_pic.url}}" alt="avatar" width="80"
+        height="80" />
+    <div>
+        <a href="{% url 'profiles:profile-detail' profile.id %}" style="text-decoration: none; color: black;">
+            <h6 class="fw-bold mb-1 mt-4">{{profile.user.username}}</h6>
+        </a>
+        <a class="btn btn-secondary" href="{% url 'profiles:profile-detail' profile.id %}" role="button">View
+            Profile</a>
+
+        {% if request.user in receiver and request.user not in profile.friends.all %}
+        <a class="btn btn-danger" href="{% url 'profiles:accept-friend' profile.id%}" role="button">Accept Request</a>
+        {% endif %}
+
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
