@@ -140,3 +140,11 @@ class ProfileListView(ListView):
         context['receiver'] = rel_receiver
 
         return context
+
+
+def send_friend_request(request, user_id):
+    sender = Profile.objects.get(user=request.user)
+    receiver = Profile.objects.get(id=user_id)
+    Relationship.objects.create(
+        sender=sender, receiver=receiver, status='send')
+    return redirect("/profile/peoples")
