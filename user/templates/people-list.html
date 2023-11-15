@@ -14,11 +14,11 @@
         <a class="btn btn-primary" href="{% url 'profiles:add-friend' profile.id%}" role="button">Add Friend</a>
         {% endif %}
         {% if profile.user in receiver and profile.user not in profile.friends.all %}
-        <button class="btn btn-danger">Cancel Request</button>
+        <a class="btn btn-danger" href="{% url 'profiles:cancel-request' profile.id%}" role="button">Cancel Request</a>
         {% endif %}
 
         {% if profile.user in profile.friends.all %}
-        <button class="btn btn-danger">Remove Friend</button>
+        <a class="btn btn-danger" href="{% url 'profiles:remove-friend' profile.id%}" role="button">Remove Friend</a>
         {% endif %}
 
     </div>

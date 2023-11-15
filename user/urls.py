@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import (profile, create_profile, login_user, signup, logout_user,
                     ProfileDetailView, get_all_user, search_user, friend_request_received,
-                    profiles_to_add_friend, ProfileListView, send_friend_request)
+                    profiles_to_add_friend, ProfileListView,
+                    send_friend_request, remove_friend, cancel_friend_request)
 
 
 app_name = 'profiles'
@@ -18,6 +19,9 @@ urlpatterns = [
     path('requests', friend_request_received, name='requests'),
     path('add-friend', profiles_to_add_friend, name='add-friend'),
     path('peoples', ProfileListView.as_view(), name='peoples'),
-    path('add-friend/<int:user_id>', send_friend_request, name='add-friend')
+    path('add-friend/<int:user_id>', send_friend_request, name='add-friend'),
+    path('remove-friend/<int:user_id>', remove_friend, name='remove-friend'),
+    path('cancel-friend/<int:user_id>',
+         cancel_friend_request, name='cancel-request'),
 
 ]

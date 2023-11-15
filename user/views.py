@@ -1,4 +1,3 @@
-from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -8,6 +7,7 @@ from .models import Profile, Relationship
 from django.views.generic import DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 @login_required(login_url='/profile/login')
@@ -109,15 +109,15 @@ def get_all_user(request):
     return render(request, 'people-list.html', context)
 
 
-class ProfileListView(ListView):
+class ProfileListView(LoginRequiredMixin, ListView):
     model = Profile
     template_name = 'people-list.html'
 
-    def get_queryset(self) -> QuerySet[Any]:
+    def get_queryset(self):
         qs = Profile.objects.get_all_profiles(self.request.user)
         return qs
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username__iexact=self.request.user)
         profile = Profile.objects.get(user=user)
@@ -142,9 +142,29 @@ class ProfileListView(ListView):
         return context
 
 
+@login_required(login_url='/profile/login')
 def send_friend_request(request, user_id):
     sender = Profile.objects.get(user=request.user)
     receiver = Profile.objects.get(id=user_id)
     Relationship.objects.create(
         sender=sender, receiver=receiver, status='send')
     return redirect("/profile/peoples")
+
+
+@login_required(login_url='/profile/login')
+def remove_friend(request, user_id):
+    sender = Profile.objects.get(user=request.user)
+    receiver = Profile.objects.get(id=user_id)
+    rel = Relationship.objects.get((Q(sender=sender) & Q(receiver=receiver)) | (
+        Q(sender=receiver) & Q(receiver=sender)))
+    rel.delete()
+    return redirect('/profile/peoples')
+
+
+def cancel_friend_request(request, user_id):
+    sender = Profile.objects.get(user=request.user)
+    receiver = Profile.objects.get(id=user_id)
+    rel = Relationship.objects.get((Q(sender=sender) & Q(receiver=receiver)) | (
+        Q(sender=receiver) & Q(receiver=sender)))
+    rel.delete()
+    return redirect('/profile/peoples')
