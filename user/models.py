@@ -33,6 +33,16 @@ class ProfileManager(models.Manager):
 
         return available_profile
 
+    def friends_list(self, user):
+        profile = Profile.objects.get(user=user)
+        friends = profile.friends.all()
+
+        friends_profile = []
+        for user_ in friends:
+            profile_ = Profile.objects.get(user=user_)
+            friends_profile.append(profile_)
+        return friends_profile
+
 
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -65,7 +75,13 @@ class Profile(BaseModel):
 class RelationshipManager(models.Manager):
     def invitation_received(self, receiver):
         qs = Relationship.objects.filter(receiver=receiver, status="send")
-        return qs
+        profiles = []
+        if qs:
+
+            for relation in qs:
+                profiles.append(relation.sender)
+
+        return profiles
 
 
 class Relationship(BaseModel):
