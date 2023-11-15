@@ -125,8 +125,6 @@ class ProfileListView(LoginRequiredMixin, ListView):
 
         relation_receiver = Relationship.objects.filter(sender=profile)
         relation_sender = Relationship.objects.filter(receiver=profile)
-        print("rel-sender ->", relation_sender)
-        print("rel-receiver ->", relation_receiver)
 
         rel_sender = []
         rel_receiver = []
@@ -161,6 +159,7 @@ def remove_friend(request, user_id):
     return redirect('/profile/peoples')
 
 
+@login_required(login_url='/profile/login')
 def cancel_friend_request(request, user_id):
     sender = Profile.objects.get(user=request.user)
     receiver = Profile.objects.get(id=user_id)
