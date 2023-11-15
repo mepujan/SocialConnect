@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for profile in profiles  %}
+{% for profile in object_list  %}
 <div class="d-flex flex-start p-2 ms-4">
     <img class="rounded-circle shadow-1-strong me-3" src="{{profile.profile_pic.url}}" alt="avatar" width="80"
         height="80" />
@@ -10,8 +10,17 @@
             <h6 class="fw-bold mb-1 mt-4">{{profile.user.username}}</h6>
         </a>
         <button class="btn btn-secondary">View Profile</button>
+        {% if profile.user not in receiver and profile.user not in sender %}
         <button class="btn btn-primary">Add Friend</button>
-        <button class="btn btn-danger">Cancel Friend Request</button>
+        {% endif %}
+        {% if profile.user in receiver and profile.user not in profile.friends.all %}
+        <button class="btn btn-danger">Cancel Request</button>
+        {% endif %}
+
+        {% if profile.user in profile.friends.all %}
+        <button class="btn btn-danger">Remove Friend</button>
+        {% endif %}
+
     </div>
 </div>
 {% endfor %}

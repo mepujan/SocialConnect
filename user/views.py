@@ -1,9 +1,11 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserUpdateForm, LoginForm, SignUpForm
 from .models import Profile, Relationship
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 
@@ -88,6 +90,15 @@ def friend_request_received(request):
 
 
 @login_required(login_url='/profile/login')
+def profiles_to_add_friend(request):
+    profiles = Profile.objects.get_all_profiles_to_add(request.user)
+    context = {
+        'profiles': profiles
+    }
+    return render(request, 'to-add-friend.html', context)
+
+
+@login_required(login_url='/profile/login')
 def get_all_user(request):
     profile_ = Profile.objects.get(user=request.user)
     profiles = Profile.objects.get_all_profiles(request.user)
@@ -98,10 +109,34 @@ def get_all_user(request):
     return render(request, 'people-list.html', context)
 
 
-@login_required(login_url='/profile/login')
-def profiles_to_add_friend(request):
-    profiles = Profile.objects.get_all_profiles_to_add(request.user)
-    context = {
-        'profiles': profiles
-    }
-    return render(request, 'to-add-friend.html', context)
+class ProfileListView(ListView):
+    model = Profile
+    template_name = 'people-list.html'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        qs = Profile.objects.get_all_profiles(self.request.user)
+        return qs
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        user = User.objects.get(username__iexact=self.request.user)
+        profile = Profile.objects.get(user=user)
+        context['profile'] = profile
+
+        relation_receiver = Relationship.objects.filter(sender=profile)
+        relation_sender = Relationship.objects.filter(receiver=profile)
+        print("rel-sender ->", relation_sender)
+        print("rel-receiver ->", relation_receiver)
+
+        rel_sender = []
+        rel_receiver = []
+        for profile_ in relation_receiver:
+            rel_receiver.append(profile_.receiver.user)
+
+        for profile_ in relation_sender:
+            rel_sender.append(profile_.sender.user)
+
+        context['sender'] = rel_sender
+        context['receiver'] = rel_receiver
+
+        return context
