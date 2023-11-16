@@ -1,5 +1,3 @@
-
-from typing import Any
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -81,16 +79,6 @@ def search_user(request):
         'profile': profile_
     }
     return render(request, 'people-list.html', context)
-
-
-# @login_required(login_url='/profile/login')
-# def friend_request_received(request):
-#     profile = Profile.objects.get(user=request.user)
-#     qs = Relationship.objects.invitation_received(receiver=profile)
-#     context = {
-#         'requests': qs
-#     }
-#     return render(request, 'friend-request.html', context)
 
 
 class FriendRequestReceivedView(ListView):
