@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if message %}
+<span style="text-align: center; color: red;">{{message}}</span>
+{% endif %}
+
 {% for profile in object_list  %}
 <div class="d-flex flex-start p-2 ms-4">
     <img class="rounded-circle shadow-1-strong me-3" src="{{profile.profile_pic.url}}" alt="avatar" width="80"

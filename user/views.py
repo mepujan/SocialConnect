@@ -71,14 +71,18 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 
 @login_required(login_url='/profile/login')
 def search_user(request):
-    users = User.objects.get(username=request.POST.get('username'))
-    profile = Profile.objects.filter(user=users)
-    profile_ = Profile.objects.get(user=request.user)
-    context = {
-        'object_list': profile,
-        'profile': profile_
-    }
-    return render(request, 'people-list.html', context)
+    try:
+        users = User.objects.get(username=request.POST.get('username'))
+        profile = Profile.objects.filter(user=users)
+        # profile_ = Profile.objects.get(user=request.user)
+        context = {
+            'object_list': profile,
+            # 'profile': profile_
+        }
+        return render(request, 'people-list.html', context)
+    except:
+        message = {'message': 'User Doesnot exist'}
+        return render(request, 'people-list.html', context=message)
 
 
 class FriendRequestReceivedView(ListView):
