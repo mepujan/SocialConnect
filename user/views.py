@@ -75,7 +75,7 @@ def search_user(request):
     profile = Profile.objects.filter(user=users)
     profile_ = Profile.objects.get(user=request.user)
     context = {
-        'profiles': profile,
+        'object_list': profile,
         'profile': profile_
     }
     return render(request, 'people-list.html', context)
