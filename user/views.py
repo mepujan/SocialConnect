@@ -73,7 +73,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 def search_user(request):
     try:
         users = User.objects.get(username=request.POST.get('username'))
-        profile = Profile.objects.filter(user=users)
+        profile = Profile.objects.filter(user=users).exclude(request.user)
         # profile_ = Profile.objects.get(user=request.user)
         context = {
             'object_list': profile,
