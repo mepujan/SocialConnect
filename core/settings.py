@@ -69,6 +69,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'user.context_processor.request_received',
                 'user.context_processor.friends_count',
+                'user.context_processor.profile_pic',
             ],
         },
     },

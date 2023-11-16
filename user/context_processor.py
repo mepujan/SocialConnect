@@ -19,3 +19,10 @@ def friends_count(request):
             'friends_count': len(friends)
         }
     return {}
+
+
+def profile_pic(request):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+        return {'profile_pic': profile.profile_pic}
+    return {}
