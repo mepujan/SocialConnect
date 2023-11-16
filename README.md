@@ -2,6 +2,11 @@
 
 This is a social media application where you can create your account and create new posts, comments on other users post. User can also edit and delete their post.
 
+<p align="center">
+  <img src="static/images/social-connect_ss.png" width="350" title="hover text">
+  
+</p>
+
 ## Features Included
 
 1. Signup and Login
