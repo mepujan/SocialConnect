@@ -7,7 +7,7 @@ from user.models import Profile, Relationship
 from django.contrib.auth.decorators import login_required
 
 
-@login_required(login_url="/profile/login")
+@login_required
 def homepage(request):
     profile_ = Profile.objects.get(user=request.user)
     c_form = CommentForm()
