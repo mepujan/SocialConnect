@@ -9,6 +9,7 @@ from django.views.generic import DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.contrib import messages
 
 
 @login_required(login_url='/profile/login')
@@ -43,6 +44,8 @@ def login_user(request):
             if user:
                 login(request, user)
                 return redirect("/")
+            messages.error(
+                request, 'Invalid username or password. Try Again ...')
     return render(request, 'login.html', {'form': form})
 
 
