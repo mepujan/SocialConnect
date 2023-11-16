@@ -9,3 +9,13 @@ def request_received(request):
             Q(receiver=profile) & Q(status="send"))
         return {'request_count': len(request_available)}
     return {}
+
+
+def friends_count(request):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+        friends = profile.friends.all()
+        return {
+            'friends_count': len(friends)
+        }
+    return {}
