@@ -50,6 +50,8 @@ def login_user(request):
 
 
 def signup(request):
+    if (request.user.is_authenticated):
+        return redirect("/")
     form = SignUpForm()
     if request.method == "POST":
         form = SignUpForm(request.POST)
