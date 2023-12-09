@@ -32,6 +32,8 @@ def create_profile(request):
 
 
 def login_user(request):
+    if (request.user.is_authenticated):
+        return redirect("/")
     form = LoginForm()
     if request.method == "POST":
         form = LoginForm(request.POST)
