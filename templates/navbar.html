@@ -11,6 +11,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if request.user.is_authenticated %}
                 <li>
                     <form class="d-flex" role="search" method="post" action="{% url 'profiles:search-user'%}">
                         {% csrf_token %}
@@ -31,6 +32,7 @@
                     <a href="{% url 'profiles:friend-request' %}" class="btn btn-secondary ms-5" role="button"
                         aria-disabled="true">Requests({{request_count}})</a>
                 </li>
+                {%endif%}
             </ul>
             <div class="d-flex">
                 {% if request.user.is_authenticated %}
@@ -41,8 +43,8 @@
                 <a href="{% url 'profiles:logout'%}" class="btn btn-danger ms-5" role="button"
                     aria-disabled="true">Logout</a>
                 {%else%}
-                <a href="{% url 'profiles:login'%}" class="btn btn-primary me-4" role="button"
-                    aria-disabled="true">Login</a>
+                <!-- <a href="{% url 'profiles:login'%}" class="btn btn-primary me-4" role="button"
+                    aria-disabled="true">Login</a> -->
                 {%endif%}
             </div>
         </div>
