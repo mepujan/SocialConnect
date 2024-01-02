@@ -20,22 +20,25 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="{% url 'profiles:peoples' %}" class="btn btn-secondary ms-5" role="button"
                         aria-disabled="true">Peoples</a>
-                </li>
+                </li> -->
                 <li>
-                    <a href="{% url 'profiles:friends' %}" class="btn btn-secondary ms-5" role="button"
-                        aria-disabled="true">Friends({{friends_count}})</a>
+
+                    <a href="{% url 'profiles:friends' %}" class="ms-5" aria-disabled="true"><i
+                            class="bi bi-people-fill" style="color: white;font-size: 2rem;"></i></a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="{% url 'profiles:friend-request' %}" class="btn btn-secondary ms-5" role="button"
                         aria-disabled="true">Requests({{request_count}})</a>
-                </li>
+                </li> -->
                 {%endif%}
             </ul>
             <div class="d-flex">
                 {% if request.user.is_authenticated %}
+                <a href="{% url 'profiles:friends' %}" class="me-5" aria-disabled="true"><i class="bi bi-chat-left"
+                        style="color: white;font-size: 2rem;"></i></a>
                 <a class=" navbar-brand" href="{% url 'profiles:profile'%}">
                     <img src="{{profile_pic.url}}" alt="{{request.user.username}}" width="30" class="rounded-pill">
                     <span>{{request.user.username}}</span>
