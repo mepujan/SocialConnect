@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import ChatMessage
 from django.db.models import Q
-from user.models import Profile
 
 
-def chat_page(request, *args, **kwargs):
+def chat_page(request):
     if not request.user.is_authenticated:
         return redirect("login-user")
     context = {}
