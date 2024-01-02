@@ -13,3 +13,6 @@ class ChatMessage(BaseModel):
 
     def __str__(self):
         return f"{self.sender.user.username} send message to {self.receiver.user.username}"
+
+# class ChatGroup(BaseModel):
+#     name = models.CharField(max_length = 100)

@@ -3,10 +3,12 @@ from .models import ChatMessage
 from django.db.models import Q
 
 
-def chat_page(request):
+def chat_page(request, id):
     if not request.user.is_authenticated:
         return redirect("login-user")
-    context = {}
+    context = {
+        'receiver_id': id
+    }
     return render(request, "chat_page.html", context)
 
 
