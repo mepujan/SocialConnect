@@ -4,7 +4,7 @@ from django.db.models import Q
 from user.models import Profile
 
 
-def chatPage(request, *args, **kwargs):
+def chat_page(request, *args, **kwargs):
     if not request.user.is_authenticated:
         return redirect("login-user")
     context = {}
