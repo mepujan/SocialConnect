@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>User Messages</h2>
+    <!-- Iterate through messages from the database -->
+    {% for msg in messages %}
+    <div class="alert alert-{{ message.message_type }}" role="alert">
+        {{ msg.message }}
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
