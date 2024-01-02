@@ -8,8 +8,16 @@
     <h2>User Messages</h2>
     <!-- Iterate through messages from the database -->
     {% for msg in messages %}
-    <div class="alert alert-{{ message.message_type }}" role="alert">
-        {{ msg.message }}
+    <div class="d-flex flex-start p-2 ms-4">
+        <img class="rounded-circle shadow-1-strong me-3" src="{{msg.receiver.profile_pic.url}}" alt="avatar" width="80"
+            height="80" />
+        <div>
+            <a href="#" style="text-decoration: none; color: black;">
+                <h6 class="fw-bold mb-1 mt-4">{{msg.receiver.user.username}}</h6>
+            </a>
+            <p>{{msg.message}}</p>
+
+        </div>
     </div>
     {% endfor %}
 </div>

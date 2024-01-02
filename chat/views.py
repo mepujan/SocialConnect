@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import ChatMessage
 from django.db.models import Q
+from user.models import Profile
 
 
 def chatPage(request, *args, **kwargs):
@@ -12,5 +13,4 @@ def chatPage(request, *args, **kwargs):
 
 def display_all_user_messages(request, id):
     messages = ChatMessage.objects.filter(Q(sender=id) | Q(receiver=id))
-    print('messages ->', messages)
     return render(request, 'messages.html', {'messages': messages})
