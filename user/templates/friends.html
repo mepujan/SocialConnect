@@ -12,6 +12,7 @@
         <a class="btn btn-secondary" href="{% url 'profiles:profile-detail' profile.id %}" role="button">View
             Profile</a>
 
+
         {% if request.user in receiver and request.user not in profile.friends.all %}
         <a class="btn btn-danger" href="{% url 'profiles:accept-friend' profile.id%}" role="button">Accept Request</a>
         {% endif %}

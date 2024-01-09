@@ -25,6 +25,7 @@
 
         {% if request.user in profile.friends.all %}
         <a class="btn btn-danger" href="{% url 'profiles:remove-friend' profile.id%}" role="button">Remove Friend</a>
+        <a class="btn btn-primary" href="{% url 'chat:message' profile.id%}" role="button">Message</a>
         {% endif %}
 
     </div>
